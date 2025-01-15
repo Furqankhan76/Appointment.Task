@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import CustomAlert from "../customAlerts/customalert";
 
+
 function ScheduleMeetingForm() {
   const navigate = useNavigate(); // Initialize useNavigate
   const [formData, setFormData] = useState({
@@ -107,7 +108,7 @@ function ScheduleMeetingForm() {
       description: formData.description || "",
       start: {
         dateTime: startDateTime,
-        timeZone: "Asia/Kolkata", // You can use dynamic timezone here
+        timeZone: "Asia/Kolkata",
       },
       end: {
         dateTime: endDateTime,
@@ -135,7 +136,7 @@ function ScheduleMeetingForm() {
       const accessToken = localStorage.getItem("google_access_token");
 
       const response = await axios.post(
-        "https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=all",
+        "api/calendar/v3/calendars/primary/events?sendUpdates=all",
         meetingData,
         {
           headers: {
@@ -146,11 +147,15 @@ function ScheduleMeetingForm() {
         }
       );
 
-      console.log("Full API Response:", response);
-      setAlertMessage(
-        "Thank you for scheduling the meeting! Meeting details will be sent to your email shortly."
-      );
+      console.log("Full API Response:", response.data);
+      const meetLink = response.data.hangoutLink;
+      console.log("Google Meet Link:", meetLink);
+
+       setAlertMessage(
+         "Thank you for scheduling the meeting! Meeting details will be sent to your email shortly."
+       );
       setIsAlertOpen(true);
+
     } catch (error) {
       console.error("Error creating event:", error);
       if (error.response) {
@@ -160,19 +165,19 @@ function ScheduleMeetingForm() {
       } else {
         console.error("Error setting up the request:", error.message);
       }
-      setAlertMessage(
-        "Error scheduling the meeting. Please try again later or contact support."
-      );
-      setIsAlertOpen(true);
+       setAlertMessage(
+         "Error scheduling the meeting. Please try again later or contact support."
+       );
+       setIsAlertOpen(true);
     }
   };
 
-  const handleAlertConfirm = () => {
-    setIsAlertOpen(false); // Close the alert
-    if (alertMessage.startsWith("Thank you")) {
-      navigate("/"); // Redirect only on success
-    }
-  };
+   const handleAlertConfirm = () => {
+     setIsAlertOpen(false); // Close the alert
+     if (alertMessage.startsWith("Thank you")) {
+       navigate("/"); // Redirect only on success
+     }
+   };
 
   const filterEndSlots = () => {
     if (!formData.startSlot) return timeSlots;
@@ -184,7 +189,7 @@ function ScheduleMeetingForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-100  dark:bg-gray-800 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6 w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">
           Schedule a Meeting
@@ -277,27 +282,28 @@ function ScheduleMeetingForm() {
             )}
           </div>
 
-          <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Attendees
             </label>
             {formData.attendees.map((email, index) => (
-              <div key={index} className="flex items-center space-x-2">
+              <div key={index} className="flex items-center gap-2 mb-2">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => handleAttendeeChange(index, e.target.value)}
                   className="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-[#e4212a] focus:border-[#e4212a]"
-                  placeholder="Enter attendee email"
+                  placeholder="Enter email address"
                   required
+                  disabled={index === 0} // Default attendee cannot be edited
                 />
-                {formData.attendees.length > 1 && (
+                {index > 0 && (
                   <button
                     type="button"
                     onClick={() => removeAttendee(index)}
-                    className="text-red-500"
+                    className="text-gray-500 hover:text-red-600"
                   >
-                    Remove
+                    🗑️
                   </button>
                 )}
               </div>
@@ -305,29 +311,24 @@ function ScheduleMeetingForm() {
             <button
               type="button"
               onClick={addAttendeeField}
-              className="mt-2 text-blue-500"
+              className="text-[#e4212a] dark:text-[#e4212a] mt-2 font-medium"
             >
-              Add Attendee
+              + Add More
             </button>
           </div>
 
-          <div className="flex justify-center">
-            <button
-              type="submit"
-              className="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-              Schedule Meeting
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-[#e4212a] text-white font-bold py-2 px-4 rounded-md hover:bg-[#d01c1f] transition"
+          >
+            Schedule Meeting
+          </button>
         </form>
-      </div>
 
-      {/* Custom Alert */}
-      <CustomAlert
-        isOpen={isAlertOpen}
-        message={alertMessage}
-        onClose={handleAlertConfirm}
-      />
+        {isAlertOpen && (
+          <CustomAlert message={alertMessage} onConfirm={handleAlertConfirm} />
+        )}
+      </div>
     </div>
   );
 }
