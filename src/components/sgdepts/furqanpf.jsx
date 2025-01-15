@@ -69,10 +69,10 @@ function Appdevs() {
           <div className="flex-1 basis-1/2">
             <div className="text-center">
               <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-6">
-                John Doe
+               Furqan Khan
               </h2>
               <p className="text-xl text-gray-700 dark:text-gray-300 mb-4">
-                App Developer | 5+ years experience
+                Trainee | 3 months+
               </p>
               <p className="text-base text-gray-600 dark:text-gray-400 mb-6">
                 I specialize in building modern web and mobile applications
@@ -85,10 +85,10 @@ function Appdevs() {
                   Contact Information
                 </h3>
                 <p>
-                  <strong>Email:</strong> developer_email@gmail.com
+                  <strong>Email:</strong> furqan@standardtouch.com
                 </p>
                 <p>
-                  <strong>Phone:</strong> +1 (123) 456-7890
+                  <strong>Phone:</strong> +91 7204708561
                 </p>
               </div>
 
@@ -99,7 +99,7 @@ function Appdevs() {
                 </h3>
                 <p>
                   HTML, CSS, JavaScript, React, Node.js, Express, MongoDB,
-                  Firebase, Tailwind CSS, Responsive Web Design
+                   Tailwind CSS, Responsive Web Design
                 </p>
               </div>
 
