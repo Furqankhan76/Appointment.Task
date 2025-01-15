@@ -4,7 +4,7 @@ import BlurText from "../../blocks/TailwindTextAnimations/BlurText/BlurText";
 
 function Homepage() {
   
-  const fk = console.log(import.meta.env.VITE_CLIENTID);
+  // const fk = console.log(import.meta.env.VITE_CLIENTID);
 
   return (
   
