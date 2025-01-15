@@ -1,5 +1,14 @@
+[build]
+  publish = "build"  # or the directory containing the build files
+  command = "npm run build"  # Build command for React
+
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/assets/*"
+  to = "/assets/:splat"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
