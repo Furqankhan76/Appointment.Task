@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/footer/Footer";
+import ScrollToTop from "./components/ScrollTop/scrolltop";
 
 function Layout() {
   const location = useLocation();
@@ -19,6 +20,7 @@ function Layout() {
 
   return (
     <div className="bg-gray-100 mx-auto dark:bg-gray-800 min-h-screen">
+      <ScrollToTop/>
       <Header />
       <Outlet />
       {/* Conditionally render Footer */}
