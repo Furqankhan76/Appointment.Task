@@ -136,7 +136,7 @@ function ScheduleMeetingForm() {
       const accessToken = localStorage.getItem("google_access_token");
 
       const response = await axios.post(
-        "https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=all",
+        "api/calendar/v3/calendars/primary/events?sendUpdates=all",
         meetingData,
         {
           headers: {
